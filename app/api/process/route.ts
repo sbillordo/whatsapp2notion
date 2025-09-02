@@ -4,7 +4,18 @@ import { downloadAudio } from "../../../lib/whatsapp";
 import { transcribeAudio, classifyIntent, generateContent } from "../../../lib/openai";
 import { normalizeText } from "../../../lib/text-utils";
 import { createNotionPage } from "../../../lib/notion";
-import { sendWhatsappMessage } from "../../../lib/whatsapp"; // opcional       
+import { sendWhatsappMessage } from "../../../lib/whatsapp"; // opcional
+
+// Definir el tipo Intent
+interface Intent {
+    modo: string
+    prioridad: string
+    status: string
+    para: string
+    tags: string[]
+    titulo: string
+    necesita_documentacion: boolean
+}       
 
 
 export async function POST(request: Request) {
@@ -32,7 +43,7 @@ export async function POST(request: Request) {
         transcript = normalizeText(text)
     }
 
-    let intent = ''
+    let intent: Intent
 
     intent = await classifyIntent(transcript)
     if (!intent) {

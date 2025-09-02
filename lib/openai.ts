@@ -16,8 +16,8 @@ export async function transcribeAudio(audioBuffer: Buffer): Promise<string> {
         apiKey: process.env.OPENAI_API_KEY,
     })
     
-    // Crear un File object compatible con OpenAI
-    const audioFile = new File([audioBuffer], 'audio.wav', { type: 'audio/wav' })
+    // Convertir Buffer a formato compatible usando casting de tipos
+    const audioFile = new File([audioBuffer as any], 'audio.wav', { type: 'audio/wav' })
     
     const transcription = await openai.audio.transcriptions.create({
         file: audioFile,

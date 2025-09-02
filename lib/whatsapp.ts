@@ -94,8 +94,17 @@ export async function sendWhatsappMessage(to: string, text: string): Promise<boo
 }
 
 
-export function extractMessagesFromWebhook(body: any): Array<any> {
-    const messages: Array<any> = []
+// Definir tipo para mensaje normalizado
+interface NormalizedMessage {
+    messageId: any
+    from: string
+    type: any
+    text?: string
+    audioId?: string
+}
+
+export function extractMessagesFromWebhook(body: any): Array<NormalizedMessage> {
+    const messages: Array<NormalizedMessage> = []
     
     // 1. Validar que existe la estructura esperada
     if (!body.entry || !body.entry[0]?.changes || !body.entry[0].changes[0]?.value?.messages) {
@@ -107,7 +116,7 @@ export function extractMessagesFromWebhook(body: any): Array<any> {
     
     // 3. Procesar cada mensaje
     for (const message of webhookMessages) {
-        const normalizedMessage = {
+        const normalizedMessage: NormalizedMessage = {
             messageId: message.id,
             from: `whatsapp:${message.from}`,
             type: message.type

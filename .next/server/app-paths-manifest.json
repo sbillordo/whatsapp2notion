@@ -1,1 +1,4 @@
-{}
+{
+  "/api/process/route": "app/api/process/route.js",
+  "/api/whatsapp/route": "app/api/whatsapp/route.js"
+}
